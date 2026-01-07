@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { BREAKING_HEADLINES } from '../constants';
 
-const BreakingNewsTicker: React.FC = () => {
+const BreakingNewsTicker = () => {
   return (
     <div className="bg-black text-white py-2 overflow-hidden border-b border-gray-800">
       <div className="container mx-auto px-4 flex items-center">
@@ -16,7 +15,6 @@ const BreakingNewsTicker: React.FC = () => {
                 • {headline}
               </span>
             ))}
-            {/* Repeat for seamless loop */}
             {BREAKING_HEADLINES.map((headline, idx) => (
               <span key={`dup-${idx}`} className="mx-8 text-xs font-medium tracking-wide">
                 • {headline}
