@@ -1,11 +1,9 @@
-
 import React from 'react';
 
-interface AdPlacementProps {
-  type: 'banner' | 'sidebar' | 'inline';
-}
-
-const AdPlacement: React.FC<AdPlacementProps> = ({ type }) => {
+/**
+ * @param {{ type: 'banner' | 'sidebar' | 'inline' }} props
+ */
+const AdPlacement = ({ type }) => {
   const styles = {
     banner: "w-full h-32 bg-gray-100 flex items-center justify-center border-y border-gray-200 my-8",
     sidebar: "w-full h-64 bg-gray-50 flex items-center justify-center border border-gray-100 mb-6",
