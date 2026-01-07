@@ -1,16 +1,17 @@
-
 import React, { useState } from 'react';
 import { MOCK_NEWS } from '../constants';
-import { NewsArticle } from '../types';
 import AdPlacement from './AdPlacement';
 import { getArticleSummary } from '../services/geminiService';
 
-const NewsGrid: React.FC = () => {
-  const [summaries, setSummaries] = useState<Record<string, string>>({});
-  const [loadingIds, setLoadingIds] = useState<Set<string>>(new Set());
+const NewsGrid = () => {
+  const [summaries, setSummaries] = useState({});
+  const [loadingIds, setLoadingIds] = useState(new Set());
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const handleAISummarize = async (article: NewsArticle) => {
+  /**
+   * @param {Object} article 
+   */
+  const handleAISummarize = async (article) => {
     if (summaries[article.id]) return;
     
     setLoadingIds(prev => new Set(prev).add(article.id));
@@ -29,12 +30,12 @@ const NewsGrid: React.FC = () => {
 
   const mainImages = mainStory.images || [mainStory.imageUrl];
 
-  const nextImage = (e: React.MouseEvent) => {
+  const nextImage = (e) => {
     e.preventDefault();
     setCurrentImageIndex((prev) => (prev + 1) % mainImages.length);
   };
 
-  const prevImage = (e: React.MouseEvent) => {
+  const prevImage = (e) => {
     e.preventDefault();
     setCurrentImageIndex((prev) => (prev - 1 + mainImages.length) % mainImages.length);
   };
@@ -42,10 +43,7 @@ const NewsGrid: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-6 md:py-10">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
-        
-        {/* Main Content Area */}
         <div className="lg:col-span-8">
-          {/* Featured Article */}
           <article className="border-b border-gray-200 pb-10 mb-10">
             <div className="mb-6">
               <a href="#" className="topic-link">{mainStory.category}</a>
@@ -63,7 +61,6 @@ const NewsGrid: React.FC = () => {
               </div>
             </div>
             
-            {/* Main Image Carousel */}
             <div className="relative group/carousel h-[300px] md:h-[450px] mb-8 overflow-hidden rounded-sm bg-gray-100">
               <div className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex" style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}>
                 {mainImages.map((img, idx) => (
@@ -76,34 +73,23 @@ const NewsGrid: React.FC = () => {
                 ))}
               </div>
 
-              {/* Navigation Arrows */}
               {mainImages.length > 1 && (
                 <>
-                  <button 
-                    onClick={prevImage}
-                    className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 z-10 transform -translate-x-2 group-hover/carousel:translate-x-0"
-                    aria-label="Previous image"
-                  >
+                  <button onClick={prevImage} className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 z-10 transform -translate-x-2 group-hover/carousel:translate-x-0">
                     <svg className="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" /></svg>
                   </button>
-                  <button 
-                    onClick={nextImage}
-                    className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 z-10 transform translate-x-2 group-hover/carousel:translate-x-0"
-                    aria-label="Next image"
-                  >
+                  <button onClick={nextImage} className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 z-10 transform translate-x-2 group-hover/carousel:translate-x-0">
                     <svg className="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" /></svg>
                   </button>
                 </>
               )}
 
-              {/* Indicators */}
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
                 {mainImages.map((_, idx) => (
                   <button
                     key={idx}
                     onClick={() => setCurrentImageIndex(idx)}
                     className={`h-1.5 transition-all duration-500 rounded-full ${currentImageIndex === idx ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'}`}
-                    aria-label={`Go to slide ${idx + 1}`}
                   />
                 ))}
               </div>
@@ -131,54 +117,34 @@ const NewsGrid: React.FC = () => {
             </div>
           </article>
 
-          {/* Secondary Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {secondaryStories.map(story => (
               <article key={story.id} className="group">
                 <div className="overflow-hidden mb-5 aspect-[16/10] bg-gray-100">
-                  <img 
-                    src={story.imageUrl} 
-                    alt={story.title} 
-                    className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                  />
+                  <img src={story.imageUrl} alt={story.title} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
                 </div>
                 <a href="#" className="topic-link">{story.category}</a>
-                <h2 className="headline-secondary mt-1 group-hover:text-red-800 transition-colors cursor-pointer">
-                  {story.title}
-                </h2>
-                <p className="text-[14px] text-gray-600 leading-relaxed line-clamp-3 mb-4 font-sans">
-                  {story.summary}
-                </p>
+                <h2 className="headline-secondary mt-1 group-hover:text-red-800 transition-colors cursor-pointer">{story.title}</h2>
+                <p className="text-[14px] text-gray-600 leading-relaxed line-clamp-3 mb-4 font-sans">{story.summary}</p>
                 <div className="meta-text font-bold uppercase tracking-tighter">{story.author} <span className="mx-1 text-gray-300 font-normal">/</span> {story.timestamp}</div>
               </article>
             ))}
           </div>
-          
-          <div className="mt-4">
-            <AdPlacement type="banner" />
-          </div>
+          <div className="mt-4"><AdPlacement type="banner" /></div>
         </div>
 
-        {/* Sidebar */}
         <aside className="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-10 lg:pt-0 lg:pl-10">
           <div className="sticky top-20">
             <div className="flex items-center justify-between border-b-2 border-black pb-1 mb-8">
-              <h3 className="text-xs font-black uppercase tracking-widest">
-                Latest Highlights
-              </h3>
+              <h3 className="text-xs font-black uppercase tracking-widest">Latest Highlights</h3>
               <span className="text-[9px] font-bold text-red-600 uppercase tracking-widest animate-pulse">Live</span>
             </div>
-            
             <div className="space-y-10">
               {sideStories.map(story => (
                 <div key={story.id} className="group border-b border-gray-100 pb-8 last:border-0 last:pb-0">
                   <a href="#" className="topic-link mb-1 inline-block">{story.category}</a>
-                  <h4 className="headline-sidebar hover:text-red-700 transition-colors cursor-pointer leading-snug">
-                    {story.title}
-                  </h4>
-                  <p className="text-[13px] text-gray-500 mt-3 line-clamp-2 leading-relaxed">
-                    {story.summary}
-                  </p>
+                  <h4 className="headline-sidebar hover:text-red-700 transition-colors cursor-pointer leading-snug">{story.title}</h4>
+                  <p className="text-[13px] text-gray-500 mt-3 line-clamp-2 leading-relaxed">{story.summary}</p>
                   <div className="mt-3 flex items-center text-[9px] text-gray-400 font-bold uppercase tracking-tighter">
                     <span className="text-gray-900">{story.author}</span>
                     <span className="mx-2 text-gray-200">•</span>
@@ -187,34 +153,9 @@ const NewsGrid: React.FC = () => {
                 </div>
               ))}
             </div>
-
-            <div className="mt-10">
-              <AdPlacement type="sidebar" />
-            </div>
-
-            {/* Newsletter Mini Form */}
-            <div className="bg-white border-4 border-gray-900 p-8 mt-10 shadow-[8px_8px_0px_rgba(0,0,0,0.1)]">
-              <h4 className="font-serif text-2xl font-black mb-2 text-gray-900">The Daily Pulse</h4>
-              <p className="text-[11px] uppercase tracking-widest text-gray-500 mb-6 leading-relaxed font-bold">
-                Elite global briefing. Zero fluff.
-              </p>
-              <div className="relative">
-                <input 
-                  type="email" 
-                  placeholder="Your professional email" 
-                  className="w-full bg-gray-50 border border-gray-200 px-4 py-3 text-sm focus:border-red-600 outline-none transition-all placeholder:text-gray-300"
-                />
-                <button className="w-full mt-3 bg-gray-900 hover:bg-red-700 text-white text-[10px] font-black uppercase tracking-widest py-4 transition-all active:scale-[0.98]">
-                  Join the List
-                </button>
-              </div>
-              <p className="mt-4 text-[9px] text-gray-400 leading-tight">
-                By subscribing, you agree to our privacy policy and terms of service.
-              </p>
-            </div>
+            <div className="mt-10"><AdPlacement type="sidebar" /></div>
           </div>
         </aside>
-
       </div>
     </div>
   );
