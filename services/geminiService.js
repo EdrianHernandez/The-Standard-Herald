@@ -1,7 +1,10 @@
-
 import { GoogleGenAI } from "@google/genai";
 
-export const getArticleSummary = async (title: string, content: string) => {
+/**
+ * @param {string} title
+ * @param {string} content
+ */
+export const getArticleSummary = async (title, content) => {
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
