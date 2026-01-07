@@ -1,7 +1,4 @@
-
-import { NewsArticle } from './types';
-
-export const MOCK_NEWS: NewsArticle[] = [
+export const MOCK_NEWS = [
   {
     id: '1',
     category: 'Politics',
