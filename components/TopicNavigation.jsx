@@ -1,10 +1,9 @@
-
 import React from 'react';
-import { Topic } from '../types';
 
-const TOPICS: Topic[] = ['World', 'Politics', 'Tech', 'Science', 'Sports', 'Culture'];
+/** @type {string[]} */
+const TOPICS = ['World', 'Politics', 'Tech', 'Science', 'Sports', 'Culture'];
 
-const TopicNavigation: React.FC = () => {
+const TopicNavigation = () => {
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm overflow-hidden">
       <div className="container mx-auto px-4">
