@@ -1,7 +1,6 @@
-
 import React from 'react';
 
-const Footer: React.FC = () => {
+const Footer = () => {
   return (
     <footer className="bg-white border-t-8 border-black pt-16 pb-10 mt-16">
       <div className="container mx-auto px-4">
